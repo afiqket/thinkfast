@@ -1,5 +1,5 @@
 /* Use #idname for IDs */
-#counterLabel{
+#numberLabel{
     /* block:
         - starts on a new line
         - occupies the full width of parent container
@@ -68,4 +68,12 @@
 */
 .buttons:active{
     background-color: black;
+}
+
+#inputDiv{
+    text-align: center;
+}
+
+#myInput{
+
 }
