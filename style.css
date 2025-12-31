@@ -1,0 +1,71 @@
+/* Use #idname for IDs */
+#counterLabel{
+    /* block:
+        - starts on a new line
+        - occupies the full width of parent container
+        - parent container default is whole screen
+        - this forces any elements after onto the next line
+    */
+    display: block;
+    /* center: self-explanatory... */
+    text-align: center;
+    /* 10em = 10 x the normal size. 1em = normal size */
+    font-size: 10em;
+    /* font-family: 
+        - List fonts by priotiy; if it doesnt find first font,
+            moves on to the second, and onwards
+        - If font name has a space, use quotes, e.g., 'Courier New'
+    */
+    font-family: Arial, Helvetica, sans-serif;
+}
+#buttonsDiv{
+    text-align: center;
+}
+/* Use .classname for classes */
+.buttons{
+    /* padding: top right bottom left 
+        - pixels between the text and the box side
+        - if only one is written, all sides take the same value
+        - if some are omitted, it takes the opposite. (left/right, top/bottom)
+    */
+    padding: 10px 20px;
+    font-size: 1.5em;
+    /* color: font color
+        - either color name or #rrggbb or #rgb
+        - enter any color and click on color box to open color pallet
+    */
+    color: white;
+    background-color: rgb(92, 184, 255);
+    /* border-radius: make the corners of a box into a circle */
+    border-radius: 10px;
+    /* cursor: turn the cursor into another cursor when hovered over, 
+        in this case, pointer
+    */
+    cursor: pointer;
+    /*
+        see .buttons:hover{} below first
+        transition: when the first arg starts to change (using pseudo-class), 
+            slowly transition into that final state by time taken in second arg  
+    */
+    transition: background-color 0.25s;
+}
+#turnOnButton{
+    background-color: rgb(69, 199, 82);
+}
+#turnOffButton{
+    background-color: rgb(244, 102, 102);
+}
+
+/* pseudo-class. It specifies what values of an element to change when "something" happens,
+    e.g., hover, active, focus, checked
+    In this case, hover: when it is hovered
+*/
+.buttons:hover{
+    background-color: rgb(20, 131, 215);
+}
+/* active: when clicked on (can be held) 
+    NOTE: also affected by transition property in .buttons!
+*/
+.buttons:active{
+    background-color: black;
+}
