@@ -2,13 +2,14 @@ const numberLabel = document.getElementById("numberLabel")
 const turnOnButton = document.getElementById("turnOnButton")
 const myInput = document.getElementById("myInput")
 const averageLabel = document.getElementById("averageLabel")
+const historyDiv = document.getElementById("historyDiv")
 let mode = "OFF"
 let curString = ""
 let targetString = ""
 let prevTime = 0
 let curTime = 0
 let timeDiff = 0
-const timesArray = []
+const historyEntriesArray = []
 let timer
 let countdownNumber
 
@@ -38,16 +39,21 @@ function turnOff() {
     curString = ""
 
     // Calculate average if possible
-    if (timesArray.length) { 
-        let sum = timesArray.reduce((accumulator, curValue) => accumulator + curValue)
-        let avg = sum / timesArray.length
+    if (historyEntriesArray.length) { 
+        let sum = historyEntriesArray.reduce((accumulator, curValue) => accumulator + curValue.time, 0)
+        let avg = sum / historyEntriesArray.length
         averageLabel.textContent = `Average: ${avg.toFixed(0)}ms`
         sum = 0
         avg = 0
+
+        const length = historyEntriesArray.length
+        for (let i = 0; i < length; i++) {
+            addHistory(historyEntriesArray[i])
+        }
     }
 
     // Reset array
-    timesArray.length = 0
+    historyEntriesArray.length = 0
 }
 
 function start() {
@@ -76,6 +82,13 @@ function start() {
             clearInterval(timer)
         }
     }, 1000);
+}
+
+function addHistory(entry) {
+    const newEntry = document.createElement("p")
+
+    newEntry.textContent = `${entry.number}: ${entry.time}ms`
+    historyDiv.appendChild(newEntry)
 }
 
 turnOnButton.onclick = function(){
@@ -120,8 +133,12 @@ document.addEventListener('keydown', function(event) {
         event.preventDefault();
         curTime = Date.now()
         timeDiff = curTime - prevTime
-        console.log(`timediff=${timeDiff}`)
-        timesArray.push(timeDiff)
+        // console.log(`timediff=${timeDiff}`)
+        let entry = {
+            number: targetString,
+            time: timeDiff 
+        }
+        historyEntriesArray.push(entry)
         numberLabel.style.color = "green"
         setTimeout(() => {
             numberLabel.style.color = "black"

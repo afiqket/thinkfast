@@ -1,6 +1,12 @@
 label{
     font-family: Arial, Helvetica, sans-serif;
 }
+p{
+    font-family: Arial, Helvetica, sans-serif;
+}
+.divs{
+    text-align: center;
+}
 /* Use #idname for IDs */
 #numberLabel{
     /* block:
