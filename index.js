@@ -54,6 +54,8 @@ function start() {
     mode = "STARTING"
     turnOnButton.id = "turnOffButton"
     turnOnButton.textContent = "STOP"
+    myInput.value = ""
+    curString = ""
     myInput.focus()
 
     // Start countdown
@@ -91,9 +93,10 @@ document.addEventListener('keydown', function(event) {
     key = event.key
     // console.log('Key pressed:', key);
 
-    if (key == "Escape" || key == "Enter") {
-        if (mode == "OFF")
+    if (key == "Enter") {
+        if (mode == "OFF") {
             start()
+        }
         else if (mode == "ON" || mode == "STARTING")
             turnOff()
     }
@@ -101,7 +104,11 @@ document.addEventListener('keydown', function(event) {
     if (mode == "OFF" || mode == "STARTING")
         return 
 
-    if (key == "Backspace") {
+    if (key == "Escape") {
+        myInput.value = ""
+        curString = ""
+    }
+    else if (key == "Backspace") {
         curString = curString.slice(0, curString.length - 1)
     }
     else if (key.length == 1) {
