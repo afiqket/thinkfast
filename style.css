@@ -13,7 +13,7 @@ label{
     /* center: self-explanatory... */
     text-align: center;
     /* 10em = 10 x the normal size. 1em = normal size */
-    font-size: 10em;
+    font-size: 7em;
     /* font-family: 
         - List fonts by priotiy; if it doesnt find first font,
             moves on to the second, and onwards
@@ -37,7 +37,6 @@ label{
         - enter any color and click on color box to open color pallet
     */
     color: white;
-    background-color: rgb(92, 184, 255);
     /* border-radius: make the corners of a box into a circle */
     border-radius: 10px;
     /* cursor: turn the cursor into another cursor when hovered over, 
@@ -57,6 +56,9 @@ label{
 #turnOffButton{
     background-color: rgb(244, 102, 102);
 }
+#modeButton{
+    background-color: rgb(92, 184, 255);
+}
 
 /* pseudo-class. It specifies what values of an element to change when "something" happens,
     e.g., hover, active, focus, checked
@@ -74,6 +76,11 @@ label{
     transition: background-color 0s;
 }
 
+#modeButton:hover{
+    background-color: rgb(67, 143, 201);
+    transition: background-color 0s;
+}
+
 
 #turnOnButton:active{
     background-color: black;
@@ -83,8 +90,20 @@ label{
     background-color: black;
 }
 
+#modeButton:active{
+    background-color: black;
+}
+
 #inputDiv{
     text-align: center;
+}
+
+#settingsDiv{
+    text-align: center;
+}
+
+.numberInputs{
+    width: 2em
 }
 
 /* #myInput{

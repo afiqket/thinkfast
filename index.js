@@ -2,6 +2,10 @@ const numberLabel = document.getElementById("numberLabel")
 const turnOnButton = document.getElementById("turnOnButton")
 const myInput = document.getElementById("myInput")
 const averageLabel = document.getElementById("averageLabel")
+const saveButton = document.getElementById("saveButton")
+const firstNumberInput = document.getElementById("firstNumberInput")
+const symbolSelect = document.getElementById("symbolSelect")
+const secondNumberInput = document.getElementById("secondNumberInput")
 let mode = "OFF"
 let curString = ""
 let targetString = ""
@@ -54,6 +58,7 @@ function start() {
     mode = "STARTING"
     turnOnButton.id = "turnOffButton"
     turnOnButton.textContent = "STOP"
+    myInput.value = ""
     myInput.focus()
 
     // Start countdown
@@ -91,7 +96,7 @@ document.addEventListener('keydown', function(event) {
     key = event.key
     // console.log('Key pressed:', key);
 
-    if (key == "Escape" || key == "Enter") {
+    if (key == "Enter") {
         if (mode == "OFF")
             start()
         else if (mode == "ON" || mode == "STARTING")
@@ -101,7 +106,11 @@ document.addEventListener('keydown', function(event) {
     if (mode == "OFF" || mode == "STARTING")
         return 
 
-    if (key == "Backspace") {
+    if (key == "Escape") {
+        myInput.value = ""
+        curString = ""
+    }
+    else if (key == "Backspace") {
         curString = curString.slice(0, curString.length - 1)
     }
     else if (key.length == 1) {
@@ -124,3 +133,10 @@ document.addEventListener('keydown', function(event) {
     }
 });
 
+saveButton.onclick = function() {
+    let num1 = firstNumberInput.value
+    let num2 = secondNumberInput.value
+    let symbol = symbolSelect.value
+
+    console.log(num1, symbol, num2)
+}
