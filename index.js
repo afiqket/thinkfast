@@ -9,7 +9,8 @@ let targetString = ""
 let prevTime = 0
 let curTime = 0
 let timeDiff = 0
-const historyEntriesArray = []
+let historyEntriesArray = []
+const historyElements = []
 let timer
 let countdownNumber
 
@@ -40,20 +41,25 @@ function turnOff() {
 
     // Calculate average if possible
     if (historyEntriesArray.length) { 
-        let sum = historyEntriesArray.reduce((accumulator, curValue) => accumulator + curValue.time, 0)
-        let avg = sum / historyEntriesArray.length
+        const sum = historyEntriesArray.reduce((accumulator, curValue) => accumulator + curValue.time, 0)
+        const avg = sum / historyEntriesArray.length
         averageLabel.textContent = `Average: ${avg.toFixed(0)}ms`
-        sum = 0
-        avg = 0
 
-        const length = historyEntriesArray.length
-        for (let i = 0; i < length; i++) {
-            addHistory(historyEntriesArray[i])
+        // Remove existing recent history elements
+        for (let i = 0; i < historyElements.length; i++) {
+            historyElements[i].remove();
         }
-    }
+        historyElements.length = 0
 
-    // Reset array
-    historyEntriesArray.length = 0
+        // Add new "recent history" elements to the pafe
+        const length = historyEntriesArray.length
+        for (let i = 0; i < 10; i++) {
+            addHistory(historyEntriesArray[length - 1 - i])
+        }
+
+        // Write array onto local storage for later access
+        localStorage.setItem("historyEntries", JSON.stringify(historyEntriesArray))
+    }
 }
 
 function start() {
@@ -89,6 +95,8 @@ function addHistory(entry) {
 
     newEntry.textContent = `${entry.number}: ${entry.time}ms`
     historyDiv.appendChild(newEntry)
+
+    historyElements.push(newEntry)
 }
 
 turnOnButton.onclick = function(){
@@ -136,7 +144,7 @@ document.addEventListener('keydown', function(event) {
         // console.log(`timediff=${timeDiff}`)
         let entry = {
             number: targetString,
-            time: timeDiff 
+            time: timeDiff
         }
         historyEntriesArray.push(entry)
         numberLabel.style.color = "green"
@@ -148,3 +156,19 @@ document.addEventListener('keydown', function(event) {
     }
 });
 
+// On page load
+function main() {
+    // load array from localstorage
+    const arrayJson = localStorage.getItem("historyEntries")
+    if (arrayJson) {
+        historyEntriesArray = JSON.parse(arrayJson)
+    } else {
+        historyEntriesArray = []
+    }
+
+    console.log("JSON:", arrayJson)
+
+    turnOff()
+}
+
+main()
