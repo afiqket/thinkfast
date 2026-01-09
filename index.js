@@ -3,6 +3,10 @@ const turnOnButton = document.getElementById("turnOnButton")
 const myInput = document.getElementById("myInput")
 const averageLabel = document.getElementById("averageLabel")
 const historyDiv = document.getElementById("historyDiv")
+const saveButton = document.getElementById("saveButton")
+const loadButton = document.getElementById("loadButton")
+const loadButtonInput = document.getElementById("loadButtonInput")
+const resetButton = document.getElementById("resetButton")
 let mode = "OFF"
 let curString = ""
 let targetString = ""
@@ -13,6 +17,7 @@ let historyEntriesArray = []
 const historyElements = []
 let timer
 let countdownNumber
+const HISTORY_KEY = "historyEntries"
 
 function getRandomDigit() {
     num = Math.floor(Math.random() * 10)
@@ -54,11 +59,14 @@ function turnOff() {
         // Add new "recent history" elements to the pafe
         const length = historyEntriesArray.length
         for (let i = 0; i < 10; i++) {
-            addHistory(historyEntriesArray[length - 1 - i])
+            if (length - 1 - i >= 0)
+                addHistory(historyEntriesArray[length - 1 - i])
         }
 
         // Write array onto local storage for later access
-        localStorage.setItem("historyEntries", JSON.stringify(historyEntriesArray))
+        localStorage.setItem(HISTORY_KEY, JSON.stringify(historyEntriesArray))
+
+        console.log("JSON:", JSON.stringify(historyEntriesArray))
     }
 }
 
@@ -100,14 +108,84 @@ function addHistory(entry) {
 }
 
 turnOnButton.onclick = function(){
-    console.log(mode)
     if (mode == "OFF") {
         start()
     }
     else if (mode == "ON" || mode == "STARTING") {
         turnOff()
     }
+}
 
+saveButton.onclick = function(){
+    const arrayJson = localStorage.getItem(HISTORY_KEY)
+    
+    const blob = new Blob([arrayJson], {type: "application/json"})
+    const url = URL.createObjectURL(blob)
+
+    const aElement = document.createElement("a")
+    aElement.href = url
+    aElement.download = "historyEntries.json"
+    document.body.appendChild(aElement)
+    aElement.click()
+    aElement.remove()
+    URL.revokeObjectURL(url)
+}
+
+loadButton.onclick = function(){
+    loadButtonInput.click()
+}
+
+loadButtonInput.addEventListener("change", async (event) => {
+    const file = event.target.files?.[0]
+    if (!file) return
+
+    loadButtonInput.disabled = true
+
+    try {
+        // load file into storage
+        const text = await file.text()
+        
+        let parsedText
+        try {
+            parsedText = JSON.parse(text)
+        } catch {
+            alert("Invalid JSON file")
+        }
+
+        let isConfirm
+        if (historyEntriesArray) {
+            isConfirm = confirm("Replace current data?")
+        } else {
+            isConfirm = true
+        }
+
+        if (isConfirm) {
+            localStorage.setItem(HISTORY_KEY, text)
+            historyEntriesArray = parsedText
+        }
+
+        turnOff()
+
+    } finally {
+        loadButtonInput.disabled = false
+        event.target.value = ""
+    }
+})
+
+resetButton.onclick = function() {
+    let isConfirm = confirm("Reset all data? (This action cannot be reverted unless the data has been exported)")
+
+    if (isConfirm) {
+        historyEntriesArray = []
+        localStorage.removeItem(HISTORY_KEY)   
+        turnOff()
+        averageLabel.textContent = `Average: 0ms`
+
+        // Remove existing recent history elements
+        for (let i = 0; i < historyElements.length; i++) {
+            historyElements[i].remove();
+        }
+    }
 }
 
 document.addEventListener('keydown', function(event) {
@@ -159,14 +237,12 @@ document.addEventListener('keydown', function(event) {
 // On page load
 function main() {
     // load array from localstorage
-    const arrayJson = localStorage.getItem("historyEntries")
+    const arrayJson = localStorage.getItem(HISTORY_KEY)
     if (arrayJson) {
         historyEntriesArray = JSON.parse(arrayJson)
     } else {
         historyEntriesArray = []
     }
-
-    console.log("JSON:", arrayJson)
 
     turnOff()
 }

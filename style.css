@@ -93,6 +93,6 @@ p{
     text-align: center;
 }
 
-/* #myInput{
-
-} */
+.saveButtons{
+    cursor: pointer;
+}
