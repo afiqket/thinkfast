@@ -4,8 +4,18 @@ This is a webpage used to test your reaction speed on things. For now, it only s
 
 Try now at [afiqket.github.io/thinkfast](https://afiqket.github.io/thinkfast/)!
 
-TODO:
+RECENT UPDATES:
 - List down entered numbers on the page
-- Show some feedback when entering the wrong answer 
+  - Recent 10 numbers entered are shown in the page
 - Add save (and load) functionality
+  - Loads and saves recent history from/to local storage
+
+TODO (FUTURE UPDATES):
+- List down entered numbers on the page
+  - Give access to all history (not just recent ones)
+  - Group the same numbers' data together
+  - Provide some kind of analysis
+- Add save (and load) functionality
+  - Add option to download and upload save file 
+- Show some feedback when entering the wrong answer
 - Add math functionality
